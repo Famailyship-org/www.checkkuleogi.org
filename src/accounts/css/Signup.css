@@ -1,0 +1,52 @@
+.form-container {
+    text-align: center; /* 가운데 정렬 */
+}
+
+.form-container div {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-bottom: 10px; /* 각 필드 간격 */
+}
+
+.form-container div label {
+    margin-right: 15px; /* 레이블과 입력 필드 사이의 간격 */
+    flex: 0 0 110px; /* 레이블의 고정 너비 설정 */
+    text-align: left; /* 레이블 왼쪽 정렬 */
+}
+
+.form-container div input,
+.form-container div select {
+    padding: 8px;
+    border: none;
+    border-radius: 5px; 
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0; /* 수직 여백 제거 */
+}
+
+.form-container div input {
+    width: 300px;
+}
+
+.form-container div select {
+    width: 100px;
+}
+
+.form-container button {
+    background-color: #FFAC12; 
+    color: white; 
+    padding: 10px 20px;
+    border: none; 
+    border-radius: 5px; 
+    font-size: 18px; 
+    font-weight: bolder; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.3s; 
+    margin-top: 20px; 
+    width: 300px;
+    margin-bottom:20px;
+}
+
+.form-container button:hover {
+    transform: scale(1.05); 
+}

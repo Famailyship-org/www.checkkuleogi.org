@@ -1,0 +1,5 @@
+.contents{
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    align-items: center; /* 가로 방향 가운데 정렬 */
+}

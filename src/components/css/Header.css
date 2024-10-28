@@ -1,0 +1,9 @@
+.header{
+    margin-top:0px;
+    /* background-color: aliceblue; */
+}
+.header img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover; 
+  }
