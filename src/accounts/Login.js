@@ -10,16 +10,38 @@ function Login() {
    const [password, setPassword] = useState('');
    const navigate = useNavigate();
  
-   // 폼 제출 처리 함수
-   const handleSubmit = (event) => {
-     event.preventDefault();
-     // 폼 제출 로직 추가
-     console.log({ userId, password });
-   };
+   const handleSubmit = async (event) => {
+    event.preventDefault();
 
-   const handleButtonClick = () => {
-    navigate('/login/child');
-  };
+    try {
+      
+      const response = await fetch('http://localhost:8080/user/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              id: userId,
+              password: password
+          })
+      });
+    
+      const data = await response.json();
+            
+      if (data.success && data.response && data.response.token) {
+          const token = data.response.token;
+          
+          localStorage.setItem('jwtToken', token);
+
+          navigate('/login/child');
+      } else {
+          alert(data.error.message);
+      }
+  } catch (error) {
+      console.error('로그인 오류:', error);
+      alert(error.message);
+  }
+};
  
    return (
      <div>
@@ -50,7 +72,7 @@ function Login() {
              />
            </div>
           
-           <button type='submit' onClick={handleButtonClick}>로그인</button>
+           <button type='submit'>로그인</button>
          </form>
        </div>
      </div>
