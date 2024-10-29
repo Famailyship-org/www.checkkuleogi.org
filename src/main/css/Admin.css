@@ -71,3 +71,13 @@
     border-radius: 5px;
     font-size: 16px;
 }
+
+td button{
+    width:50px;
+    background-color: #FFAC12;
+    color:white;
+    font-weight: bolder;
+    font-size: 15px;
+    border: none;
+    border-radius: 2px;
+}
