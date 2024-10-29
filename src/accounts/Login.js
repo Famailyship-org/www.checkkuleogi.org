@@ -35,11 +35,11 @@ function Login() {
 
           navigate('/login/child');
       } else {
-          alert('로그인에 실패했습니다.');
+          alert(data.error.message);
       }
   } catch (error) {
       console.error('로그인 오류:', error);
-      alert('로그인에 실패했습니다.');
+      alert(error.message);
   }
 };
  

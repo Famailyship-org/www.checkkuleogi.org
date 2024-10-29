@@ -6,7 +6,7 @@ import './css/Signup.css';
 function Signup() {
   const navigate = useNavigate();
 
-  // 각 입력 필드에 대한 상태 변수
+   
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,46 +14,44 @@ function Signup() {
   const [parentEmail, setParentEmail] = useState('');
   const [parentBirthdate, setParentBirthdate] = useState('');
   const [gender, setGender] = useState('');
-
-  // 폼 제출 처리 함수
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log({ userId, password, confirmPassword, parentName, parentEmail, parentBirthdate, gender });
+  
+   
+  
     
-    // 페이지 이동
-    navigate('/signup/child');
-  };
+  const handleSubmit = async (event) => {
+     event.preventDefault();
+    
+     const userData = {
+       id: userId,
+       password: password,
+       confirmPassword: confirmPassword,
+       name: parentName,
+       email: parentEmail,
+       birthday: parentBirthdate,
+       gender: gender 
+     };
 
-  // // 폼 제출 처리 함수 -- 백엔드 연결 버전
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
+     try {
+       const response = await fetch('http://localhost:8080/user/join', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(userData),
+       });
 
-  //   // POST 요청 데이터
-  //   const userData = {
-  //     id: userId,
-  //     password: password,
-  //     name: parentName,
-  //   };
+       const data = await response.json();
 
-  //   try {
-  //     const response = await fetch('http://localhost:8080/user/join', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(userData),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('회원가입 요청이 실패했습니다.');
-  //     }
-
-  //     // 회원가입 성공 시 페이지 이동
-  //     navigate('/signup/child');
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
+       if(response.ok){
+        navigate('/signup/child');
+       } else{
+        alert(data.message);
+       }
+        
+     } catch (error) {
+        alert(error.message);
+     }
+   };
 
   return (
     <div>
