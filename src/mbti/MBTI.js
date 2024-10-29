@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // 추가
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import './css/MBTI.css';
 
@@ -7,20 +7,27 @@ function MBTI() {
   const navigate = useNavigate(); 
 
   const handleStartTest = () => {
-    navigate('/mbti/test'); 
+    navigate('/mbti/main'); 
+  };
+
+  const handleResetRecords = () => {
+    // 기록 초기화 로직 구현
+    console.log("기록이 초기화되었습니다."); // 기능 구현을 위한 자리
   };
 
   return (
     <div>
       <Header />
       <div className='contents'>
-        <h1>MBTI진단</h1>
+        <h1>MBTI진단 기록</h1>
         <div className='mbti-box'>
-          <img src='image/mbtiTest.jpg' alt="mbti진단 사진"/>
+          <div className='mbti-change'>mbti변화추이 보여줄 거임</div>
+          <div className='mbti-controls'> 
+            <span className='reset-text' onClick={handleResetRecords}>
+              기록 초기화
+            </span>
+          </div>
           <button onClick={handleStartTest}>진단 시작하기</button>
-          <p>유의해주세요.<br/>9세 이상의 아이라면 스스로 진단할 수 있도록 해주세요.<br/>
-          스스로 질문지를 읽기 어려운 아이라면 부모님께서 진단에 함께 해주세요<br/>
-          질문을 이해하기 어려운 아이라면 부모님께서 대신 응답해주세요.</p>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import './css/Book.css'; 
 
-function Recommendlist() {
+function BookList() {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -20,13 +20,13 @@ function Recommendlist() {
     };
 
     const toggleLike = () => {
-      setLiked(!liked);
-      if (disliked) setDisliked(false); // 싫어요가 눌려 있으면 해제
+        setLiked(!liked);
+        if (disliked) setDisliked(false); // 싫어요가 눌려 있으면 해제
     };
 
     const toggleDislike = () => {
-      setDisliked(!disliked);
-      if (liked) setLiked(false); // 좋아요가 눌려 있으면 해제
+        setDisliked(!disliked);
+        if (liked) setLiked(false); // 좋아요가 눌려 있으면 해제
     };
 
     const bookDetails = [
@@ -59,7 +59,7 @@ function Recommendlist() {
         <div>
             <Header />
             <div className='contents'>
-                <h1>전체 책 목록</h1>
+                <h1>추천 책 목록</h1>
                 <div className="book-list">
                     {Array.from({ length: 10 }).map((_, index) => (
                         <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
@@ -101,7 +101,7 @@ function Recommendlist() {
                                     className={`dislike-icon ${disliked ? 'active' : ''}`}
                                     onClick={toggleDislike}
                                 />
-                            </div>   
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,4 +110,4 @@ function Recommendlist() {
     );
 }
 
-export default Recommendlist;
+export default BookList;

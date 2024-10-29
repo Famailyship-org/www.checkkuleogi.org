@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import './css/Book.css'; 
 
-function LikeList() {
+function RecentList() {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -59,7 +59,7 @@ function LikeList() {
         <div>
             <Header />
             <div className='contents'>
-                <h1>좋아요 책 목록</h1>
+                <h1>최근 본 책 목록</h1>
                 <div className="book-list">
                     {Array.from({ length: 10 }).map((_, index) => (
                         <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
@@ -109,4 +109,4 @@ function LikeList() {
     );
 }
 
-export default LikeList;
+export default RecentList;

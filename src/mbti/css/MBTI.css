@@ -8,6 +8,31 @@
     align-items: center;
 }
 
+.mbti-change {
+    width: 800px;
+    height: 300px;
+    background-color: #ccc;
+}
+
+.mbti-controls {
+    display: flex; 
+    justify-content: flex-end; 
+    width: 100%; 
+}
+
+.reset-text {
+    color: #f44336; 
+    cursor: pointer; 
+    text-decoration: underline; /* 밑줄 추가 */
+    margin-right: 10px; /* 버튼과의 간격 추가 */
+}
+  
+.reset-text:hover {
+    color: #d32f2f; 
+}
+
+  
+
 .mbti-box img{
     width:400px;
 }
@@ -22,7 +47,7 @@
     font-weight: bolder; 
     cursor: pointer; 
     transition: background-color 0.3s, transform 0.3s; 
-    margin-top: 30px; 
+    margin-top: 10px; 
     width: 300px;
 }
 
