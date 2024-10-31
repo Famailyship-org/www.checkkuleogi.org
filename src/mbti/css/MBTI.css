@@ -31,10 +31,8 @@
     color: #d32f2f; 
 }
 
-  
-
-.mbti-box img{
-    width:400px;
+.mbti-box img {
+    width: 400px;
 }
 
 .mbti-box button {
@@ -51,12 +49,11 @@
     width: 300px;
 }
 
-.mbti-box p{
-    color:red;
+.mbti-box p {
+    color: red;
     font-size: 15px;
     font-weight: bold;
 }
-
 
 .options {
     display: flex;
@@ -73,11 +70,10 @@
     text-align: center;
 }
 
-.option img{
+.option img {
     width: 250px;
     height: 250px;
 }
-
 
 /* 결과MBTIResult */
 .result-box {
@@ -107,25 +103,30 @@
 }
 
 .text-container {
-    width:300px;
+    width: 300px;
 }
 
-.text-container p{
+.text-container p {
     font-size: 16px;
 }
 
 .percentage-item {
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin: 10px 0; /* 위 아래 간격 */
+}
+
+.label, .value {
+    width: 60px; /* 왼쪽 및 오른쪽 텍스트의 너비 설정 */
 }
 
 .progress-bar {
-    flex: 1;
+    flex: 1; /* progress-bar가 가능한 모든 공간을 차지 */
     background-color: #e0e0e0; /* 배경색을 지정 */
     border-radius: 5px;
-    margin: 0 10px;
     height: 20px; /* progress-bar의 높이 지정 */
+    margin: 0 10px; /* progress bar 간격 */
+    position: relative; /* position을 relative로 설정 */
 }
 
 .progress {

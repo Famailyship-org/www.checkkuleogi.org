@@ -9,6 +9,7 @@ function Home() {
     const [disliked, setDisliked] = useState(false);
     const [books, setBooks] = useState([]);
     const [childIdx, setChildIdx] = useState(null); // childIdx 상태 추가
+    const [bookDetails, setBookDetails] = useState(null); // 선택한 책의 상세정보 저장
 
     useEffect(() => {
         // sessionStorage에서 child_idx 가져오기
@@ -21,14 +22,30 @@ function Home() {
             .catch(error => console.error("Error fetching books:", error));
     }, []);
 
-    const handleBookClick = (index) => {
+    const handleBookClick = async (index) => {
+        const bookIdx = books[index].idx; // 선택한 책의 idx
         setSelectedBook(index);
         setModalOpen(true);
+
+        // API 호출하여 책 정보 조회
+        try {
+            const kidIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
+            const response = await fetch(`http://localhost:8080/api/v1/book/${bookIdx}?kidIdx=${kidIdx}`);
+            const data = await response.json();
+            if (data.success) {
+                setBookDetails(data.response); // 가져온 책 정보 저장
+            } else {
+                console.error("Failed to fetch book details");
+            }
+        } catch (error) {
+            console.error("Error fetching book details:", error);
+        }
     };
 
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedBook(null);
+        setBookDetails(null); // 모달 닫을 때 선택한 책 정보 초기화
     };
 
     const toggleLike = () => {
@@ -97,29 +114,29 @@ function Home() {
                 </div>
             </div>
 
-            {modalOpen && selectedBook !== null && (
+            {modalOpen && selectedBook !== null && bookDetails && ( // 책 정보가 있을 때만 모달 표시
                 <div className='book-modal'>
                     <div className='book-modal-content'>
-                        <img src={`/image/book/book${books[selectedBook].idx}.jpg`} alt="책" /> 
+                        <img src={`/image/book/book${bookDetails.idx}.jpg`} alt="책" /> 
                         <span className='close' onClick={handleCloseModal}>&times;</span>
-                        <h2>{books[selectedBook].title}</h2>
-                        <p className='author'>{books[selectedBook].author}</p>
+                        <h2>{bookDetails.title}</h2>
+                        <p className='author'>{bookDetails.author}</p>
                         <div className='detail'>
-                          <h2>이 책은요</h2>
-                          <h3>줄거리</h3>
-                          <p>{books[selectedBook].summary}</p>
-                          <h3>MBTI</h3>
-                          <div className='book-mbti'>
-                            {books[selectedBook].mbti && books[selectedBook].mbti.split("").map((type) => (
-                                <div className='mbti-item' key={type}>
-                                    <div className='circle'>{type}</div>
-                                    <p className='description'>{mbtiDescriptions[type]}</p>
-                                </div>
-                            ))}
-                          </div>
-                          {/* 좋아요 및 싫어요 버튼 */}
-                          <h3>나는 이 책이</h3>
-                          <div className='like-dislike'>
+                            <h2>이 책은요</h2>
+                            <h3>줄거리</h3>
+                            <p>{bookDetails.summary}</p>
+                            <h3>MBTI</h3>
+                            <div className='book-mbti'>
+                                {bookDetails.mbti && bookDetails.mbti.split("").map((type) => (
+                                    <div className='mbti-item' key={type}>
+                                        <div className='circle'>{type}</div>
+                                        <p className='description'>{mbtiDescriptions[type]}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* 좋아요 및 싫어요 버튼 */}
+                            <h3>나는 이 책이</h3>
+                            <div className='like-dislike'>
                                 <FaThumbsUp
                                     className={`like-icon ${liked ? 'active' : ''}`}
                                     onClick={toggleLike}
@@ -128,7 +145,7 @@ function Home() {
                                     className={`dislike-icon ${disliked ? 'active' : ''}`}
                                     onClick={toggleDislike}
                                 />
-                          </div>
+                            </div>
                         </div>
                     </div>
                 </div>

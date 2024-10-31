@@ -1,26 +1,106 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom'; // Import useNavigate
 import Header from '../components/Header';
+import mbtiDescriptions from './mbtiDescription'; // Import the MBTI descriptions
 import './css/MBTI.css';
 
 function MBTIResult() {
-    const mbtiType = "조용하고 신비로운 INFJ"; // 결과 예시
-    const description = "인내심이 많고 통찰력과 직관력이 뛰어나며, 화합을 추구하는 유형이다. 창의력이 좋으며, 성숙한 경우에는 강한 직관력으로 타인에게 말없이도 큰 영향을 끼친다.";
-    const percentages = {
-        EI: { E: 36, I: 64 },
-        SN: { S: 45, N: 55 },
-        TF: { T: 20, F: 80 },
-        JP: { J: 95, P: 5 },
+    const location = useLocation();
+    const { results } = location.state; // MBTITest에서 전달한 results 가져오기
+
+    const getMBTIResult = (results) => {
+        const [EI, SN, TF, JP] = results;
+        const mbtiType = [
+            EI > 0 ? 'E' : 'I',
+            SN > 0 ? 'S' : 'N',
+            TF > 0 ? 'T' : 'F',
+            JP > 0 ? 'J' : 'P'
+        ].join('');
+
+        const description = mbtiDescriptions[mbtiType] || "MBTI 결과를 확인할 수 없습니다.";
+        return { mbtiType, description };
     };
+
+    const { mbtiType, description } = getMBTIResult(results);
+
+    const percentages = {
+        EI: { 
+            E: Math.round((Math.abs(results[0]) / 3) * 100), 
+            I: Math.round(100 - (Math.abs(results[0]) / 3) * 100) 
+        },
+        SN: { 
+            S: Math.round((Math.abs(results[1]) / 3) * 100), 
+            N: Math.round(100 - (Math.abs(results[1]) / 3) * 100) 
+        },
+        TF: { 
+            T: Math.round((Math.abs(results[2]) / 3) * 100), 
+            F: Math.round(100 - (Math.abs(results[2]) / 3) * 100) 
+        },
+        JP: { 
+            J: Math.round((Math.abs(results[3]) / 3) * 100), 
+            P: Math.round(100 - (Math.abs(results[3]) / 3) * 100) 
+        },
+    };
+    
+    const [childName, setChildName] = useState('');
+
+    useEffect(() => {
+        const fetchChildData = async () => {
+            const childIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`);
+                const data = await response.json();
+                if (data.success) {
+                    setChildName(data.response.name); // childName 설정
+                } else {
+                    console.error("Failed to fetch child data");
+                }
+            } catch (error) {
+                console.error("Error fetching child data:", error);
+            }
+        };
+
+        fetchChildData();
+    }, []);
+
+    const handleSubmit = async () => {
+        const surveys = results;
+    
+        try {
+            const response = await fetch("http://localhost:8080/api/v1/child/mbti", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    childName: childName,
+                    surveys: surveys
+                }),
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                alert("MBTI 결과가 성공적으로 등록되었습니다.");
+                window.location.href = '/';  // 새로고침과 함께 홈 페이지로 이동
+            } else {
+                alert("등록에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("서버와의 통신 중 오류가 발생했습니다.");
+        }
+    };
+    
 
     const renderProgressBar = (label1, value1, label2, value2) => {
         return (
             <div className='percentage-item'>
-                <span>{label1} {value1}%</span>
-                <div className='progress-bar' style={{ flexGrow: 1, margin: '0 10px', position: 'relative', backgroundColor: '#e0e0e0' }}>
+                <span className='label'>{label1} {value1}%</span>
+                <div className='progress-bar'>
                     {value1 > value2 ? (
                         <div 
                             className='progress' 
-                            style={{ width: `${value1}%`, backgroundColor: '#fcbf1e', height: '100%', borderRadius: '5px' }} 
+                            style={{ width: `${value1}%`, backgroundColor: '#fcbf1e' }} 
                         ></div>
                     ) : (
                         <div 
@@ -30,14 +110,12 @@ function MBTIResult() {
                                 backgroundColor: '#fcbf1e', 
                                 position: 'absolute', 
                                 right: 0,
-                                transform: 'scaleX(-1)', 
-                                height: '100%', 
-                                borderRadius: '5px' 
+                                transform: 'scaleX(-1)' 
                             }} 
                         ></div>
                     )}
                 </div>
-                <span>{value2}% {label2}</span>
+                <span className='value'>{value2}% {label2}</span>
             </div>
         );
     };
@@ -68,7 +146,7 @@ function MBTIResult() {
                         {renderProgressBar('J', percentages.JP.J, 'P', percentages.JP.P)}
                     </div>
                 </div>
-                <button className='submit-button'>진단 기록하기</button>
+                <button className='submit-button' onClick={handleSubmit}>진단 기록하기</button>
             </div>
         </div>
     );
