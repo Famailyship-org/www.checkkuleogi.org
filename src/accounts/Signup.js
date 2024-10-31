@@ -43,7 +43,7 @@ function Signup() {
        const data = await response.json();
 
        if(response.ok){
-        navigate('/signup/child');
+        navigate('/login');
        } else{
         alert(data.message);
        }
@@ -137,7 +137,7 @@ function Signup() {
               <option value='female'>여성</option>
             </select>
           </div>
-          <button type='submit'>다음 단계</button>
+          <button type='submit'>회원가입 완료</button>
         </form>
       </div>
     </div>

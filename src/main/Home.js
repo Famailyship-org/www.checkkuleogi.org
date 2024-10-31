@@ -8,8 +8,13 @@ function Home() {
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const [books, setBooks] = useState([]);
+    const [childIdx, setChildIdx] = useState(null); // childIdx 상태 추가
 
     useEffect(() => {
+        // sessionStorage에서 child_idx 가져오기
+        const idx = sessionStorage.getItem('child_idx');
+        setChildIdx(idx);
+
         fetch("http://localhost:8080/api/v1/book")
             .then(response => response.json())
             .then(data => setBooks(data.response.slice(0, 7))) // 전체 목록에서 7개만 가져옴
@@ -60,20 +65,22 @@ function Home() {
                 </div>
             </div>
 
-            <div className="book-container"> 
-                <div className="header">
-                    <h2>추천 책 목록(이거는 로그인 사람만 보임)</h2>
-                    <a href="/book/recommend" className="view-all">전체 보기</a>
+            {childIdx ? ( // childIdx가 있으면 추천 책 목록 표시
+                <div className="book-container"> 
+                    <div className="header">
+                        <h2>추천 책 목록(이거는 로그인 사람만 보임)</h2>
+                        <a href="/book/recommend" className="view-all">전체 보기</a>
+                    </div>
+                    <div className="book-slider">
+                        {Array.from({ length: 7 }).map((_, index) => (
+                            <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
+                                <img src={'/image/book.webp'} alt={`책 ${index + 1}`} className="book-image" /> 
+                                <p>책 제목 {index + 1}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                <div className="book-slider">
-                    {Array.from({ length: 7 }).map((_, index) => (
-                        <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
-                            <img src={'/image/book.webp'} alt={`책 ${index + 1}`} className="book-image" /> 
-                            <p>책 제목 {index + 1}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            ) : null}
 
             <div className="book-container"> 
                 <div className="header">

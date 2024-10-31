@@ -10,6 +10,7 @@ function BookList() {
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
 
+    // 서버에서 책 목록 가져오기
     const fetchBooks = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/v1/book");
@@ -30,7 +31,23 @@ function BookList() {
         fetchBooks();
     }, []);
 
-    const handleBookClick = (index) => {
+    // 책 클릭 시 조회 기록 남기고 모달 열기
+    const handleBookClick = async (index) => {
+        const book = bookDetails[index];
+        const childIdx = sessionStorage.getItem('child_idx'); // sessionStorage에서 child_idx 가져오기
+
+        if (childIdx && book.idx) {
+            try {
+                // 조회 기록 API 호출
+                await fetch(`http://localhost:8080/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
+                    method: 'GET'
+                });
+                console.log(`조회 기록 남김: book_idx=${book.idx}, kidIdx=${childIdx}`);
+            } catch (error) {
+                console.error("Error logging view:", error);
+            }
+        }
+
         setSelectedBook(index);
         setModalOpen(true);
     };
