@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
-import './css/Book.css'; 
+import './css/Book.css';
 
 function BookList() {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [bookDetails, setBookDetails] = useState([]);
-    const [liked, setLiked] = useState(false);
-    const [disliked, setDisliked] = useState(false);
+    const [likedStatus, setLikedStatus] = useState([]); // 각 책의 좋아요 상태 저장
+    const [dislikedStatus, setDislikedStatus] = useState([]); // 각 책의 싫어요 상태 저장
 
+    // 서버에서 책 목록 가져오기
     const fetchBooks = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/v1/book");
@@ -26,11 +27,47 @@ function BookList() {
         }
     };
 
+    // 좋아요 및 싫어요 상태 가져오기
+    const fetchLikeDislikeStatus = async () => {
+        const childIdx = sessionStorage.getItem('child_idx');
+        if (!childIdx) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`);
+            const data = await response.json();
+            if (data.success) {
+                const liked = data.response.map(item => item.isLike);
+                const disliked = data.response.map(item => !item.isLike);
+                setLikedStatus(liked);
+                setDislikedStatus(disliked);
+            }
+        } catch (error) {
+            console.error("Error fetching like/dislike status:", error);
+        }
+    };
+
     useEffect(() => {
         fetchBooks();
+        fetchLikeDislikeStatus(); // 좋아요/싫어요 상태를 가져오는 API 호출
     }, []);
 
-    const handleBookClick = (index) => {
+    // 책 클릭 시 조회 기록 남기고 모달 열기
+    const handleBookClick = async (index) => {
+        const book = bookDetails[index];
+        const childIdx = sessionStorage.getItem('child_idx'); // sessionStorage에서 child_idx 가져오기
+
+        if (childIdx && book.idx) {
+            try {
+                // 조회 기록 API 호출
+                await fetch(`http://localhost:8080/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
+                    method: 'GET'
+                });
+                console.log(`조회 기록 남김: book_idx=${book.idx}, kidIdx=${childIdx}`);
+            } catch (error) {
+                console.error("Error logging view:", error);
+            }
+        }
+
         setSelectedBook(index);
         setModalOpen(true);
     };
@@ -40,14 +77,138 @@ function BookList() {
         setSelectedBook(null);
     };
 
-    const toggleLike = () => {
-        setLiked(!liked);
-        if (disliked) setDisliked(false); // 싫어요가 눌려 있으면 해제
+    // 좋아요 등록/취소
+    const toggleLike = async () => {
+        const index = selectedBook;
+        const book = bookDetails[index];
+        const childIdx = sessionStorage.getItem('child_idx'); // childIdx 가져오기
+
+        if (!childIdx) return;
+
+        // 싫어요가 되어 있으면 해제
+        if (dislikedStatus[index]) {
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: false,
+                }),
+            });
+            setDislikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = false;
+                return newStatus;
+            });
+        }
+
+        if (likedStatus[index]) {
+            // 좋아요 취소
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: true,
+                }),
+            });
+            setLikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = false;
+                return newStatus;
+            });
+        } else {
+            // 좋아요 등록
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: true,
+                }),
+            });
+            setLikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = true;
+                return newStatus;
+            });
+        }
     };
 
-    const toggleDislike = () => {
-        setDisliked(!disliked);
-        if (liked) setLiked(false); // 좋아요가 눌려 있으면 해제
+    // 싫어요 등록/취소
+    const toggleDislike = async () => {
+        const index = selectedBook;
+        const book = bookDetails[index];
+        const childIdx = sessionStorage.getItem('child_idx'); // childIdx 가져오기
+
+        if (!childIdx) return;
+
+        // 좋아요가 되어 있으면 해제
+        if (likedStatus[index]) {
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: true,
+                }),
+            });
+            setLikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = false;
+                return newStatus;
+            });
+        }
+
+        if (dislikedStatus[index]) {
+            // 싫어요 취소
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: false,
+                }),
+            });
+            setDislikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = false;
+                return newStatus;
+            });
+        } else {
+            // 싫어요 등록
+            await fetch(`http://localhost:8080/api/v1/book/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    childIdx: childIdx,
+                    bookIdx: book.idx,
+                    isLike: false,
+                }),
+            });
+            setDislikedStatus(prev => {
+                const newStatus = [...prev];
+                newStatus[index] = true;
+                return newStatus;
+            });
+        }
     };
 
     const mbtiDescriptions = {
@@ -100,11 +261,11 @@ function BookList() {
                             <h3>나는 이 책이</h3>
                             <div className='like-dislike'>
                                 <FaThumbsUp
-                                    className={`like-icon ${liked ? 'active' : ''}`}
+                                    className={`like-icon ${likedStatus[selectedBook] ? 'active' : ''}`}
                                     onClick={toggleLike}
                                 />
                                 <FaThumbsDown
-                                    className={`dislike-icon ${disliked ? 'active' : ''}`}
+                                    className={`dislike-icon ${dislikedStatus[selectedBook] ? 'active' : ''}`}
                                     onClick={toggleDislike}
                                 />
                             </div>

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import './css/Child.css';
 
 function LoginChild() {
     const [modalOpen, setModalOpen] = useState(false);
     const [childInfo, setChildInfo] = useState([]); // 등록된 아이 정보를 저장
-    const navigate = useNavigate();
-
     useEffect(() => {
         const fetchChildren = async () => {
             const token = localStorage.getItem('jwtToken');
@@ -106,7 +103,7 @@ function LoginChild() {
     const handleProfileClick = (child) => {
         // 클릭한 어린이의 idx를 세션 저장소에 저장
         sessionStorage.setItem('child_idx', child.idx);
-        navigate('/'); // 원하는 경로로 이동
+        window.location.href = '/';
     };
 
     return (
