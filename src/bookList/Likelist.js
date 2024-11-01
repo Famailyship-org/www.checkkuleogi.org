@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import './css/Book.css';
+import { useNavigate } from 'react-router-dom'; // navigate를 위해 useNavigate 추가
 
 function LikeList() {
+    const navigate = useNavigate(); // useNavigate 훅 사용
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [likedBooks, setLikedBooks] = useState([]);
     const [likedStatus, setLikedStatus] = useState({});
     const [dislikedStatus, setDislikedStatus] = useState({});
+    
     const mbtiDescriptions = {
         "E": "외향",
         "I": "내향",
@@ -19,13 +22,19 @@ function LikeList() {
         "P": "탐색",
         "J": "계획"
     };
+
     useEffect(() => {
         const fetchLikedBooks = async () => {
             const childIdx = sessionStorage.getItem('child_idx');
             if (!childIdx) return;
 
+            const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`);
+                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                    }
+                });
                 const data = await response.json();
 
                 if (data.success) {
@@ -67,10 +76,16 @@ function LikeList() {
         const childIdx = sessionStorage.getItem('child_idx');
         if (!childIdx) return;
 
+        const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
+        const headers = {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}` // Authorization 헤더 추가
+        };
+
         if (dislikedStatus[book.idx]) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),
             });
             setDislikedStatus(prev => ({ ...prev, [book.idx]: false }));
@@ -79,14 +94,14 @@ function LikeList() {
         if (likedStatus[book.idx]) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
             });
             setLikedStatus(prev => ({ ...prev, [book.idx]: false }));
         } else {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
             });
             setLikedStatus(prev => ({ ...prev, [book.idx]: true }));
@@ -98,10 +113,16 @@ function LikeList() {
         const childIdx = sessionStorage.getItem('child_idx');
         if (!childIdx) return;
 
+        const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
+        const headers = {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}` // Authorization 헤더 추가
+        };
+
         if (likedStatus[book.idx]) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
             });
             setLikedStatus(prev => ({ ...prev, [book.idx]: false }));
@@ -110,14 +131,14 @@ function LikeList() {
         if (dislikedStatus[book.idx]) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),
             });
             setDislikedStatus(prev => ({ ...prev, [book.idx]: false }));
         } else {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),
             });
             setDislikedStatus(prev => ({ ...prev, [book.idx]: true }));

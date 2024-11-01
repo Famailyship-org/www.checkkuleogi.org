@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom'; // Import useNavigate
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import mbtiDescriptions from './mbtiDescription'; // Import the MBTI descriptions
+import mbtiDescriptions from './mbtiDescription';
 import './css/MBTI.css';
 
 function MBTIResult() {
     const location = useLocation();
-    const { results } = location.state; // MBTITest에서 전달한 results 가져오기
+    const navigate = useNavigate(); // useNavigate 추가
+    const { results } = location.state;
 
     const getMBTIResult = (results) => {
         const [EI, SN, TF, JP] = results;
@@ -46,12 +47,17 @@ function MBTIResult() {
 
     useEffect(() => {
         const fetchChildData = async () => {
-            const childIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
+            const childIdx = sessionStorage.getItem('child_idx');
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`);
+                const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
+                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // JWT를 Authorization 헤더에 추가
+                    }
+                });
                 const data = await response.json();
                 if (data.success) {
-                    setChildName(data.response.name); // childName 설정
+                    setChildName(data.response.name);
                 } else {
                     console.error("Failed to fetch child data");
                 }
@@ -67,10 +73,12 @@ function MBTIResult() {
         const surveys = results;
     
         try {
+            const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
             const response = await fetch("http://localhost:8080/api/v1/child/mbti", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // JWT를 Authorization 헤더에 추가
                 },
                 body: JSON.stringify({
                     childName: childName,
@@ -81,7 +89,7 @@ function MBTIResult() {
             const data = await response.json();
             if (data.success) {
                 alert("MBTI 결과가 성공적으로 등록되었습니다.");
-                window.location.href = '/';  // 새로고침과 함께 홈 페이지로 이동
+                window.location.href = '/';  // 성공 시 페이지 이동
             } else {
                 alert("등록에 실패했습니다.");
             }
@@ -90,6 +98,7 @@ function MBTIResult() {
             alert("서버와의 통신 중 오류가 발생했습니다.");
         }
     };
+    
     
 
     const renderProgressBar = (label1, value1, label2, value2) => {

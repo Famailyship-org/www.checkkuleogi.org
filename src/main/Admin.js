@@ -15,32 +15,63 @@ function Admin() {
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookData, setBookData] = useState([]);
+  const [isAuthorized, setIsAuthorized] = useState(false); // 권한 상태 추가
 
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetchBooks();
+    checkAuthorization(); // 권한 확인 함수 호출
   }, []);
+
+  const checkAuthorization = async () => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      window.location.href = '/'; // 홈 페이지로 리다이렉트
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/user/${JSON.parse(atob(token.split('.')[1])).sub}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.response.name === 'ADMIN') {
+        setIsAuthorized(true); // 관리자인 경우 권한 허용
+        fetchBooks(); // 권한 확인 후 책 목록 가져오기
+      } else {
+        alert('권한이 없습니다. 관리자만 접근할 수 있습니다.');
+        window.location.href = '/'; // 홈 페이지로 리다이렉트
+      }
+    } catch (error) {
+      console.error('권한 확인 실패:', error);
+      alert('권한 확인에 실패했습니다.');
+      window.location.href = '/'; // 홈 페이지로 리다이렉트
+    }
+  };
 
   const fetchBooks = async () => {
     try {
-        const response = await fetch('http://localhost:8080/api/v1/book');
-        const result = await response.json();
-        if (result.success) {
-            // 최신 등록 순으로 정렬
-            const sortedBooks = result.response.sort((a, b) => b.idx - a.idx); // idx가 높은 책이 먼저 오도록 정렬
-            setBookData(sortedBooks); // 서버에서 받은 데이터로 상태 업데이트
-        } else {
-            throw new Error(result.error || '책 목록을 불러오는 데 실패했습니다.');
-        }
+      const response = await fetch('http://localhost:8080/api/v1/book');
+      const result = await response.json();
+      if (result.success) {
+        // 최신 등록 순으로 정렬
+        const sortedBooks = result.response.sort((a, b) => b.idx - a.idx); // idx가 높은 책이 먼저 오도록 정렬
+        setBookData(sortedBooks); // 서버에서 받은 데이터로 상태 업데이트
+      } else {
+        throw new Error(result.error || '책 목록을 불러오는 데 실패했습니다.');
+      }
     } catch (error) {
-        console.error('책 목록 가져오기 실패:', error);
-        setErrorMessage('책 목록을 불러오는 데 실패했습니다.');
+      console.error('책 목록 가져오기 실패:', error);
+      setErrorMessage('책 목록을 불러오는 데 실패했습니다.');
     }
-};
-
+  };
 
   // 페이지 변경 함수
   const handlePageChange = (page) => {
@@ -94,12 +125,15 @@ function Admin() {
     setLoading(true);
     setErrorMessage('');
 
-    //수정 & 등록
+    const token = localStorage.getItem('jwtToken'); // 토큰 가져오기
+
+    // 수정 & 등록
     try {
       const response = await fetch(selectedBook ? `http://localhost:8080/api/v1/book/admin/${selectedBook.idx}` : 'http://localhost:8080/api/v1/book/admin', {
         method: selectedBook ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // JWT 토큰 추가
         },
         body: JSON.stringify(formData),
       });
@@ -130,9 +164,13 @@ function Admin() {
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
+      const token = localStorage.getItem('jwtToken'); // 토큰 가져오기
       try {
         const response = await fetch(`http://localhost:8080/api/v1/book/admin/${id}`, {
           method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`, // JWT 토큰 추가
+          },
         });
 
         const result = await response.json();
@@ -157,7 +195,7 @@ function Admin() {
       <Header />
       <div className='contents'>
         <h1>관리자페이지</h1>
-        
+
         <table className="admin-table">
           <thead>
             <tr>
@@ -176,7 +214,7 @@ function Admin() {
                 <td>{item.title}</td>
                 <td>{item.author}</td>
                 <td>{item.publisher}</td>
-                <td>{item.mbti}</td> {/* MBTI 값이 잘 출력되는지 확인 */}
+                <td>{item.mbti}</td>
                 <td>
                   <button onClick={(e) => { e.stopPropagation(); handleDelete(item.idx); }}>삭제</button>
                 </td>

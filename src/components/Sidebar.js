@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'; // JWT 디코딩 라이브러리 추가
 
 function Sidebar() {
     const navigate = useNavigate();
     const location = useLocation();
     const [showTooltip, setShowTooltip] = useState(false);
     const [childInfo, setChildInfo] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false); // ADMIN 역할 여부 상태 추가
 
-    // 로그인 후 아이 정보를 가져오는 함수
+    // 사용자 정보를 가져오는 함수
     const fetchChildInfo = async () => {
         const token = localStorage.getItem('jwtToken');
         const childIdx = sessionStorage.getItem('child_idx');
@@ -32,14 +34,37 @@ function Sidebar() {
         }
     };
 
-    // 상태를 변수에 저장
-    const token = localStorage.getItem('jwtToken');
-    const childIdx = sessionStorage.getItem('child_idx');
+    // 사용자 역할을 가져오는 함수
+    const fetchUserRole = async () => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            const decodedToken = jwtDecode(token); // 토큰 디코딩
+            const userId = decodedToken.sub; // 토큰에서 userId 추출
+
+            try {
+                const response = await fetch(`http://localhost:8080/user/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    setIsAdmin(data.response.name === 'ADMIN'); // 이름이 ADMIN인지 확인
+                } else {
+                    console.error('사용자 정보 불러오기 실패:', data.error);
+                }
+            } catch (error) {
+                console.error('API 호출 오류:', error);
+            }
+        }
+    };
 
     // 컴포넌트가 처음 렌더링될 때와 child_idx 또는 jwtToken이 변경될 때 호출
     useEffect(() => {
         fetchChildInfo();
-    }, [token, childIdx]);
+        fetchUserRole(); // 사용자 역할 정보 가져오기
+    }, []);
 
     return (
         <div className="sidebar">
@@ -101,14 +126,16 @@ function Sidebar() {
                             onClick={() => navigate("/event")}
                             className={location.pathname === '/event' ? 'active' : ''}
                         />
-                        <MenuItem
-                            logosrc="/image/menubar/settings.png"
-                            label="Admin"
-                            onClick={() => navigate("/admin")}
-                            className={location.pathname === '/admin' ? 'active' : ''}
-                        />
                     </>
                 )}
+                {isAdmin && (
+                            <MenuItem
+                                logosrc="/image/menubar/settings.png"
+                                label="Admin"
+                                onClick={() => navigate("/admin")}
+                                className={location.pathname === '/admin' ? 'active' : ''}
+                            />
+                        )}
             </div>
         </div>
     );

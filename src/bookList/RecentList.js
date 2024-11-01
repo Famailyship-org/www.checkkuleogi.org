@@ -13,8 +13,13 @@ function RecentList() {
     const fetchRecentBooks = async () => {
         const childIdx = sessionStorage.getItem('child_idx');
         if (childIdx) {
+            const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/recent`);
+                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/recent`, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                    }
+                });
                 const data = await response.json();
                 if (data.success) {
                     setRecentBooks(data.response);
@@ -51,6 +56,7 @@ function RecentList() {
         const index = selectedBook;
         const book = recentBooks[index];
         const childIdx = sessionStorage.getItem('child_idx');
+        const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
         if (!childIdx) return;
 
         const newLikedStatus = !likedStatus[index];
@@ -63,7 +69,10 @@ function RecentList() {
         if (newLikedStatus) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                },
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true })
             });
             setDislikedStatus(prev => {
@@ -74,7 +83,10 @@ function RecentList() {
         } else {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                },
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true })
             });
         }
@@ -84,6 +96,7 @@ function RecentList() {
         const index = selectedBook;
         const book = recentBooks[index];
         const childIdx = sessionStorage.getItem('child_idx');
+        const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
         if (!childIdx) return;
 
         const newDislikedStatus = !dislikedStatus[index];
@@ -96,7 +109,10 @@ function RecentList() {
         if (newDislikedStatus) {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                },
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false })
             });
             setLikedStatus(prev => {
@@ -107,7 +123,10 @@ function RecentList() {
         } else {
             await fetch(`http://localhost:8080/api/v1/book/like`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` // Authorization 헤더 추가
+                },
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false })
             });
         }
