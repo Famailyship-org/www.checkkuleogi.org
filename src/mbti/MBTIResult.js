@@ -47,8 +47,14 @@ function MBTIResult() {
     useEffect(() => {
         const fetchChildData = async () => {
             const childIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
+            const token = localStorage.getItem('jwtToken');
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`);
+                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`,{
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const data = await response.json();
                 if (data.success) {
                     setChildName(data.response.name); // childName 설정
@@ -65,12 +71,13 @@ function MBTIResult() {
 
     const handleSubmit = async () => {
         const surveys = results;
-    
+        const token = localStorage.getItem('jwtToken');
         try {
             const response = await fetch("http://localhost:8080/api/v1/child/mbti", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     childName: childName,
