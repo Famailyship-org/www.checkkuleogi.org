@@ -17,22 +17,19 @@ function Home() {
         const idx = sessionStorage.getItem('child_idx');
         setChildIdx(idx);
     
+        fetchBooks(); // 항상 책 목록을 가져옵니다
+    
         if (idx) {
-            fetchBooks(); // 아이 인덱스가 있을 경우 책 목록을 가져옵니다
             fetchLikeDislikeStatus(idx); // 좋아요 상태 가져오기
             if (token) {
-                fetchRecommendedBooks(idx);
+                fetchRecommendedBooks(idx); // 추천 책 목록은 로그인한 경우만 가져옴
             }
         }
     }, [token]);
-
+    
     const fetchBooks = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/v1/book", {
-                headers: {
-                    Authorization: `Bearer ${token}` // Authorization 헤더 추가
-                }
-            });
+            const response = await fetch("http://localhost:8080/api/v1/book"); // JWT 토큰 없이 호출
             const data = await response.json();
             if (data.success) {
                 const formattedData = data.response.map(book => ({
@@ -46,6 +43,7 @@ function Home() {
             console.error("Error fetching book data:", error);
         }
     };
+    
 
     const fetchRecommendedBooks = async (childIdx) => {
         try {
@@ -311,45 +309,45 @@ return (
         </div>
 
             {modalOpen && selectedBook !== null && (
-    <div className='book-modal' onClick={handleCloseModal}>
-        <div className='book-modal-content' onClick={(e) => e.stopPropagation()}>
-            <img src={`/image/book/book${bookDetails[selectedBook].idx}.jpg`} alt={bookDetails[selectedBook].title} />
-            <span className='close' onClick={handleCloseModal}>&times;</span>
-            <h2>{bookDetails[selectedBook].title}</h2>
-            <p className='author'>{bookDetails[selectedBook].author}</p>
-            <div className='detail'>
-                <h2>이 책은요</h2>
-                <h3>줄거리</h3>
-                <p>{bookDetails[selectedBook].summary}</p>
-                <h3>MBTI</h3>
-                <div className='book-mbti'>
-                    {Array.isArray(bookDetails[selectedBook].mbti) ? (
-                        bookDetails[selectedBook].mbti.map((type) => (
-                            <div className='mbti-item' key={type}>
-                                <div className='circle'>{type}</div>
-                                <p className='description'>{mbtiDescriptions[type]}</p>
+                <div className='book-modal' onClick={handleCloseModal}>
+                    <div className='book-modal-content' onClick={(e) => e.stopPropagation()}>
+                        <img src={`/image/book/book${bookDetails[selectedBook].idx}.jpg`} alt={bookDetails[selectedBook].title} />
+                        <span className='close' onClick={handleCloseModal}>&times;</span>
+                        <h2>{bookDetails[selectedBook].title}</h2>
+                        <p className='author'>{bookDetails[selectedBook].author}</p>
+                        <div className='detail'>
+                            <h2>이 책은요</h2>
+                            <h3>줄거리</h3>
+                            <p>{bookDetails[selectedBook].summary}</p>
+                            <h3>MBTI</h3>
+                            <div className='book-mbti'>
+                                {Array.isArray(bookDetails[selectedBook].mbti) ? (
+                                    bookDetails[selectedBook].mbti.map((type) => (
+                                        <div className='mbti-item' key={type}>
+                                            <div className='circle'>{type}</div>
+                                            <p className='description'>{mbtiDescriptions[type]}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>MBTI 정보가 없습니다.</p>
+                                )}
                             </div>
-                        ))
-                    ) : (
-                        <p>MBTI 정보가 없습니다.</p>
-                    )}
+                            {/* 좋아요 및 싫어요 버튼 */}
+                            <h3>나는 이 책이</h3>
+                            <div className='like-dislike'>
+                                <FaThumbsUp
+                                    className={`like-icon ${likedStatus[selectedBook] ? 'active' : ''}`}
+                                    onClick={toggleLike}
+                                />
+                                <FaThumbsDown
+                                    className={`dislike-icon ${dislikedStatus[selectedBook] ? 'active' : ''}`}
+                                    onClick={toggleDislike}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {/* 좋아요 및 싫어요 버튼 */}
-                <h3>나는 이 책이</h3>
-                <div className='like-dislike'>
-                    <FaThumbsUp
-                        className={`like-icon ${likedStatus[selectedBook] ? 'active' : ''}`}
-                        onClick={toggleLike}
-                    />
-                    <FaThumbsDown
-                        className={`dislike-icon ${dislikedStatus[selectedBook] ? 'active' : ''}`}
-                        onClick={toggleDislike}
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
-)}
+            )}
 
         </div>
     );
