@@ -230,7 +230,7 @@ function Home() {
             {childIdx ? ( // childIdx가 있으면 추천 책 목록 표시
                 <div className="book-container"> 
                     <div className="header">
-                        <h2>추천 책 목록(이거는 로그인 사람만 보임)</h2>
+                        <h2>추천 책 목록</h2>
                         <a href="/book/recommend" className="view-all">전체 보기</a>
                     </div>
                     <div className="book-slider">

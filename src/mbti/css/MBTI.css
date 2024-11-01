@@ -4,8 +4,14 @@
 
 .mbti-box {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
+    max-width: 800px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .mbti-change {
@@ -49,7 +55,12 @@
     width: 300px;
 }
 
-.mbti-box p {
+.mbti-box button:hover {
+    background-color: #ff9c00;
+    transform: scale(1.05); /* 클릭 시 부드러운 확대 효과 */
+}
+
+.mbti-warning {
     color: red;
     font-size: 15px;
     font-weight: bold;
@@ -57,7 +68,7 @@
 
 .options {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .option {
@@ -66,13 +77,40 @@
     border-radius: 10px;
     cursor: pointer;
     flex: 1;
-    margin: 0 80px;
+    margin: 0 50px;
     text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 380px;
+    width: 300px;
+}
+
+.option:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .option img {
     width: 250px;
     height: 250px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.option-text {
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: left; /* 왼쪽 정렬 */
+    display: block; /* 텍스트를 블록으로 설정하여 정렬 */
+    transition: color 0.3s, transform 0.3s;
+}
+
+
+.option:hover .option-text {
+    transform: scale(1.05); /* 살짝 확대되는 효과 */
 }
 
 /* 결과MBTIResult */
