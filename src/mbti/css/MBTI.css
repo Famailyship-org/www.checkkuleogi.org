@@ -15,9 +15,12 @@
 }
 
 .mbti-change {
-    width: 800px;
-    height: 300px;
-    background-color: #ccc;
+    width: 1000px; /* 기존보다 작게 설정 */
+    height: 650px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin-left: auto; /* 요소를 중앙에 정렬 */
+    margin-right: auto;
 }
 
 .mbti-controls {
