@@ -96,7 +96,7 @@ function Promotion() {
 
           <img src='/image/event.png' alt="응모이벤트 사진"/>
           <button onClick={handleOpenModal}>응모하기</button>
-          <button onClick={handleOpenCheckModal}>확인하기</button>
+          <button onClick={handleOpenCheckModal} style={{marginBottom:"30px"}}>확인하기</button>
         </div>
       </div>
 

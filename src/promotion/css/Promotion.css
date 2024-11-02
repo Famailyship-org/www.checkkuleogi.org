@@ -25,7 +25,11 @@
     transition: background-color 0.3s, transform 0.3s; 
     margin-top: 10px; 
     width: 300px;
-    margin-bottom: 30px;
+}
+
+.event-box button:hover {
+    background-color: #ff9c00;
+    transform: scale(1.05); /* 클릭 시 부드러운 확대 효과 */
 }
 
 .form-container button:hover {
