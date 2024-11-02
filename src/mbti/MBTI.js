@@ -189,15 +189,15 @@ function MBTI() {
       <div className='contents'>
         <h1>MBTI진단 기록</h1>
         <div className='mbti-box'>
-          <div className='mbti-change'>
-            <Line data={chartData} options={chartOptions} />
+          <div className='mbti-change' style={{ width: "800px" }}>
+            <Line data={chartData} options={chartOptions} style={{marginLeft:"-10px"}}/>
           </div>
           <div className='mbti-controls'> 
             <span className='reset-text' onClick={handleResetRecords}>
               기록 초기화
             </span>
           </div>
-          <button onClick={handleStartTest}>진단 시작하기</button>
+          <button onClick={handleStartTest}>MBTI진단하기</button>
         </div>
       </div>
     </div>

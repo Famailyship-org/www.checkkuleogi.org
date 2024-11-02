@@ -49,7 +49,12 @@ function MBTIResult() {
         const fetchChildData = async () => {
             const childIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`);
+                const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
+                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // JWT를 Authorization 헤더에 추가
+                    }
+                });
                 const data = await response.json();
                 if (data.success) {
                     setChildName(data.response.name);
@@ -73,6 +78,7 @@ function MBTIResult() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     childName: childName,
