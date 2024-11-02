@@ -270,7 +270,7 @@ return (
             </div>
 
             <div className="banner-container">
-                <img src="image/main.png" alt="이벤트 배너" className="banner-image" />
+                <img src="image/eventbanner.png" alt="이벤트 배너" className="banner-image" onClick={() => window.location.href = '/event'}/>
             </div>
         </div>
 

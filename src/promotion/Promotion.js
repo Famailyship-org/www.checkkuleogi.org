@@ -26,7 +26,7 @@ function Promotion() {
       <div className='contents'>
         <h1>이벤트 응모</h1>
         <div className='event-box'>
-          <img src='image/event.jpg' alt="응모이벤트 사진"/>
+          <img src='/image/event.png' alt="응모이벤트 사진"/>
           <button onClick={handleOpenModal}>응모하기</button>
         </div>
       </div>
