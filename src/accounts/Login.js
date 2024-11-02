@@ -43,10 +43,11 @@ function Login() {
             const userData = await userResponse.json();
             if (userData.success && userData.response.name === 'ADMIN') {
                // 관리자인 경우 /admin 페이지로 이동
-               navigate('/admin');
+               window.location.href = '/admin';
             } else {
                // 일반 사용자일 경우 /login/child 페이지로 이동
-               navigate('/login/child');
+               window.location.href = '/login/child';
+              //  navigate('/login/child');
             }
          } else {
             alert(data.error.message);

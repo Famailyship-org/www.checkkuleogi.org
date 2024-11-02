@@ -34,7 +34,7 @@ function BookList() {
     const fetchLikeDislikeStatus = async () => {
         const childIdx = sessionStorage.getItem('child_idx');
         if (!childIdx) return;
-
+    
         try {
             const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`, {
                 headers: {
@@ -52,6 +52,7 @@ function BookList() {
             console.error("Error fetching like/dislike status:", error);
         }
     };
+    
 
     useEffect(() => {
         fetchBooks();
@@ -63,23 +64,31 @@ function BookList() {
             alert("로그인 후 책 세부정보를 확인할 수 있습니다.");
             return;
         }
-
+    
         const book = bookDetails[index];
         const childIdx = sessionStorage.getItem('child_idx');
-
+    
         if (childIdx && book.idx) {
             try {
-                await fetch(`http://localhost:8080/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
-                    method: 'GET'
+                const response = await fetch(`http://localhost:8080/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}` // JWT 토큰을 헤더에 추가
+                    }
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
             } catch (error) {
                 console.error("Error logging view:", error);
             }
         }
-
+    
         setSelectedBook(index);
         setModalOpen(true);
     };
+    
 
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -89,6 +98,7 @@ function BookList() {
 // 좋아요 등록/취소
 const toggleLike = async () => {
     const index = selectedBook;
+    console.log(index + "Aa"); // 수정된 부분
     const book = bookDetails[index];
     const childIdx = sessionStorage.getItem('child_idx');
 
