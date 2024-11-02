@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-
-import './css/Login.css'
+import './css/Login.css';
 
 function Login() {
    // 각 입력 필드에 대한 상태 변수
@@ -11,37 +10,53 @@ function Login() {
    const navigate = useNavigate();
  
    const handleSubmit = async (event) => {
-    event.preventDefault();
+      event.preventDefault();
 
-    try {
-      
-      const response = await fetch('http://localhost:8080/user/login', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              id: userId,
-              password: password
-          })
-      });
+      try {
+         const response = await fetch('http://localhost:8080/user/login', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               id: userId,
+               password: password
+            })
+         });
     
-      const data = await response.json();
+         const data = await response.json();
             
-      if (data.success && data.response && data.response.token) {
-          const token = data.response.token;
-          
-          localStorage.setItem('jwtToken', token);
+         if (data.success && data.response && data.response.token) {
+            const token = data.response.token;
+            localStorage.setItem('jwtToken', token);
+            
+            // JWT 토큰에서 user ID(sub) 추출
+            const userIdFromToken = JSON.parse(atob(token.split('.')[1])).sub;
 
-          navigate('/login/child');
-      } else {
-          alert(data.error.message);
+            // 사용자 정보 확인
+            const userResponse = await fetch(`http://localhost:8080/user/${userIdFromToken}`, {
+               headers: {
+                  'Authorization': `Bearer ${token}`,
+               },
+            });
+
+            const userData = await userResponse.json();
+            if (userData.success && userData.response.name === 'ADMIN') {
+               // 관리자인 경우 /admin 페이지로 이동
+               window.location.href = '/admin';
+            } else {
+               // 일반 사용자일 경우 /login/child 페이지로 이동
+               window.location.href = '/login/child';
+              //  navigate('/login/child');
+            }
+         } else {
+            alert(data.error.message);
+         }
+      } catch (error) {
+         console.error('로그인 오류:', error);
+         alert(error.message);
       }
-  } catch (error) {
-      console.error('로그인 오류:', error);
-      alert(error.message);
-  }
-};
+   };
  
    return (
      <div>
@@ -61,7 +76,7 @@ function Login() {
              />
            </div>
            <div>
-           <label>비밀번호</label>
+             <label>비밀번호</label>
              <input 
                type='password' 
                name='password' 
@@ -78,6 +93,5 @@ function Login() {
      </div>
    );
  }
- 
 
 export default Login;

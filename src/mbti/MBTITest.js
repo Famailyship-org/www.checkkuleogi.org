@@ -32,8 +32,8 @@ function MBTITest() {
         <div>
             <Header />
             <div className='contents'>
+            <h1>{currentQuestion.text}</h1>
                 <div className='mbti-box'>
-                    <h1>{currentQuestion.text}</h1>
                     <div className='options'>
                         {currentQuestion.options.map((option, index) => (
                             <div
@@ -42,7 +42,7 @@ function MBTITest() {
                                 onClick={() => handleOptionClick(option)}
                             >
                                 <img src={option.img} alt={option.text} />
-                                <p>{option.text}</p>
+                                <p className='option-text' dangerouslySetInnerHTML={{ __html: option.text }}/>
                             </div>
                         ))}
                     </div>
