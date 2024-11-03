@@ -129,7 +129,7 @@ function Admin() {
 
     // 수정 & 등록
     try {
-      const response = await fetch(selectedBook ? `https://kkuleogi.kro.kr/api/v1/book/admin/${selectedBook.idx}` : 'http://localhost:8080/api/v1/book/admin', {
+      const response = await fetch(selectedBook ? `https://kkuleogi.kro.kr/api/v1/book/admin/${selectedBook.idx}` : 'https://kkuleogi.kro.kr/api/v1/book/admin', {
         method: selectedBook ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
