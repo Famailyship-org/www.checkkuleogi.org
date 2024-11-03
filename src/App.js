@@ -14,10 +14,10 @@ import MBTITest from "./mbti/MBTITest";
 import MBTIResult from "./mbti/MBTIResult";
 import Promotion from './promotion/Promotion';
 import Admin from './main/Admin';
-import LikeList from './bookList/LikeList';
+import LikeList from './bookList/Likelist';
 import BookList from './bookList/BookList';
-import RecommendList from './bookList/RecommendList';
-import RecentList from './bookList/RecentList';
+import RecommendList from './bookList/Recommendlist';
+import RecentList from './bookList/Recentlist';
 
 import './App.css';
 
