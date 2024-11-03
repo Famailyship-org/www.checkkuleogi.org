@@ -29,7 +29,7 @@ function RecommendList() {
             if (!childIdx || !token) return;
 
             try {
-                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/${childIdx}/recommend`, {
+                const response = await fetch(`https://kkuleogi.kro.kr/api/v1/book/${childIdx}/recommend`, {
                     headers: {
                         Authorization: `Bearer ${token}` // Authorization 헤더 추가
                     }
@@ -73,7 +73,7 @@ function RecommendList() {
         if (!childIdx || !token) return;
 
         const method = isLike ? 'POST' : 'DELETE';
-        await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
+        await fetch(`https://kkuleogi.kro.kr/api/v1/book/like`, {
             method,
             headers: {
                 'Content-Type': 'application/json',

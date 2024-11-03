@@ -13,7 +13,7 @@ function Login() {
       event.preventDefault();
 
       try {
-         const response = await fetch('http://kkuleogi.kro.kr/user/login', {
+         const response = await fetch('https://kkuleogi.kro.kr/user/login', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ function Login() {
             const userIdFromToken = JSON.parse(atob(token.split('.')[1])).sub;
 
             // 사용자 정보 확인
-            const userResponse = await fetch(`http://kkuleogi.kro.kr/user/${userIdFromToken}`, {
+            const userResponse = await fetch(`https://kkuleogi.kro.kr/user/${userIdFromToken}`, {
                headers: {
                   'Authorization': `Bearer ${token}`,
                },

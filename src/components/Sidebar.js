@@ -17,7 +17,7 @@ function Sidebar() {
 
         if (token && childIdx) {
             try {
-                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/child/${childIdx}`, {
+                const response = await fetch(`https://kkuleogi.kro.kr/api/v1/child/${childIdx}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -43,7 +43,7 @@ function Sidebar() {
             const userId = decodedToken.sub; // 토큰에서 userId 추출
 
             try {
-                const response = await fetch(`http://kkuleogi.kro.kr/user/${userId}`, {
+                const response = await fetch(`https://kkuleogi.kro.kr/user/${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },

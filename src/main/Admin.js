@@ -34,7 +34,7 @@ function Admin() {
     }
 
     try {
-      const response = await fetch(`http://kkuleogi.kro.kr/user/${JSON.parse(atob(token.split('.')[1])).sub}`, {
+      const response = await fetch(`https://kkuleogi.kro.kr/user/${JSON.parse(atob(token.split('.')[1])).sub}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -58,7 +58,7 @@ function Admin() {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch('http://kkuleogi.kro.kr/api/v1/book');
+      const response = await fetch('https://kkuleogi.kro.kr/api/v1/book');
       const result = await response.json();
       if (result.success) {
         // 최신 등록 순으로 정렬
@@ -129,7 +129,7 @@ function Admin() {
 
     // 수정 & 등록
     try {
-      const response = await fetch(selectedBook ? `http://kkuleogi.kro.kr/api/v1/book/admin/${selectedBook.idx}` : 'http://localhost:8080/api/v1/book/admin', {
+      const response = await fetch(selectedBook ? `https://kkuleogi.kro.kr/api/v1/book/admin/${selectedBook.idx}` : 'http://localhost:8080/api/v1/book/admin', {
         method: selectedBook ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ function Admin() {
     if (confirmDelete) {
       const token = localStorage.getItem('jwtToken'); // 토큰 가져오기
       try {
-        const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/admin/${id}`, {
+        const response = await fetch(`https://kkuleogi.kro.kr/api/v1/book/admin/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`, // JWT 토큰 추가
