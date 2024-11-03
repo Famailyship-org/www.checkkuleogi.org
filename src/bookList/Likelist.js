@@ -30,7 +30,7 @@ function LikeList() {
 
             const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`, {
+                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/${childIdx}/like`, {
                     headers: {
                         Authorization: `Bearer ${token}` // Authorization 헤더 추가
                     }
@@ -83,7 +83,7 @@ function LikeList() {
         };
 
         if (dislikedStatus[book.idx]) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),
@@ -92,14 +92,14 @@ function LikeList() {
         }
 
         if (likedStatus[book.idx]) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
             });
             setLikedStatus(prev => ({ ...prev, [book.idx]: false }));
         } else {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
@@ -120,7 +120,7 @@ function LikeList() {
         };
 
         if (likedStatus[book.idx]) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: true }),
@@ -129,14 +129,14 @@ function LikeList() {
         }
 
         if (dislikedStatus[book.idx]) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),
             });
             setDislikedStatus(prev => ({ ...prev, [book.idx]: false }));
         } else {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({ childIdx, bookIdx: book.idx, isLike: false }),

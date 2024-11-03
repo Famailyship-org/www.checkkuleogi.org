@@ -15,7 +15,7 @@ function RecentList() {
         if (childIdx) {
             const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/recent`, {
+                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/${childIdx}/recent`, {
                     headers: {
                         Authorization: `Bearer ${token}` // Authorization 헤더 추가
                     }
@@ -67,7 +67,7 @@ function RecentList() {
         });
 
         if (newLikedStatus) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ function RecentList() {
                 return newStatus;
             });
         } else {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ function RecentList() {
         });
 
         if (newDislikedStatus) {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ function RecentList() {
                 return newStatus;
             });
         } else {
-            await fetch(`http://localhost:8080/api/v1/book/like`, {
+            await fetch(`http://kkuleogi.kro.kr/api/v1/book/like`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

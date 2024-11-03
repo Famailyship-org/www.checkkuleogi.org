@@ -50,7 +50,7 @@ function MBTIResult() {
             const childIdx = sessionStorage.getItem('child_idx'); // child_idx 가져오기
             try {
                 const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
-                const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`, {
+                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/child/${childIdx}`, {
                     headers: {
                         'Authorization': `Bearer ${token}` // JWT를 Authorization 헤더에 추가
                     }
@@ -74,7 +74,7 @@ function MBTIResult() {
         const token = localStorage.getItem('jwtToken');
         try {
             const token = localStorage.getItem('jwtToken'); // JWT 토큰 가져오기
-            const response = await fetch("http://localhost:8080/api/v1/child/mbti", {
+            const response = await fetch("http://kkuleogi.kro.kr/api/v1/child/mbti", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

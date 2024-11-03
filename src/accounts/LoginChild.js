@@ -14,7 +14,7 @@ function LoginChild() {
             }
 
             try {
-                const response = await fetch('http://localhost:8080/api/v1/child/login', {
+                const response = await fetch('http://kkuleogi.kro.kr/api/v1/child/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ function LoginChild() {
                     const childrenIds = data.response.id; // 아이 ID 목록
                     // 아이의 정보를 가져오기 위해 비동기 요청을 보냄
                     const childrenDetails = await Promise.all(childrenIds.map(async (id) => {
-                        const childResponse = await fetch(`http://localhost:8080/api/v1/child/${id}`, {
+                        const childResponse = await fetch(`http://kkuleogi.kro.kr/api/v1/child/${id}`, {
                             method: 'GET',
                             headers: {
                                 'Authorization': `Bearer ${token}`
@@ -76,7 +76,7 @@ function LoginChild() {
         }
 
         // API 요청
-        const response = await fetch('http://localhost:8080/api/v1/child', {
+        const response = await fetch('http://kkuleogi.kro.kr/api/v1/child', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

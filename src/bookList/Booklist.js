@@ -13,7 +13,7 @@ function BookList() {
 
     const fetchBooks = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/v1/book", {
+            const response = await fetch("http://kkuleogi.kro.kr/api/v1/book", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -36,7 +36,7 @@ function BookList() {
         if (!childIdx) return;
     
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/book/${childIdx}/like`, {
+            const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/${childIdx}/like`, {
                 headers: {
                     Authorization: `Bearer ${token}` // JWT 토큰을 헤더에 추가
                 }
@@ -70,7 +70,7 @@ function BookList() {
     
         if (childIdx && book.idx) {
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
+                const response = await fetch(`http://kkuleogi.kro.kr/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}` // JWT 토큰을 헤더에 추가
@@ -106,7 +106,7 @@ const toggleLike = async () => {
 
     // 싫어요가 되어 있으면 해제
     if (dislikedStatus[index]) {
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const toggleLike = async () => {
 
     if (likedStatus[index]) {
         // 좋아요 취소
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ const toggleLike = async () => {
         });
     } else {
         // 좋아요 등록
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ const toggleDislike = async () => {
 
     // 좋아요가 되어 있으면 해제
     if (likedStatus[index]) {
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -198,7 +198,7 @@ const toggleDislike = async () => {
 
     if (dislikedStatus[index]) {
         // 싫어요 취소
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ const toggleDislike = async () => {
         });
     } else {
         // 싫어요 등록
-        await fetch("http://localhost:8080/api/v1/book/like", {
+        await fetch("http://kkuleogi.kro.kr/api/v1/book/like", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

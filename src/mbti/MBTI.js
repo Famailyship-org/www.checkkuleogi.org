@@ -22,7 +22,7 @@ function MBTI() {
 
       if (token && childIdx) {
         try {
-          const response = await fetch("http://localhost:8080/api/v1/child/mbti", {
+          const response = await fetch("http://kkuleogi.kro.kr/api/v1/child/mbti", {
             method: "DELETE",
             headers: {
               'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function MBTI() {
 
     if (token && childIdx) {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/child/${childIdx}`, {
+        const response = await fetch(`http://kkuleogi.kro.kr/api/v1/child/${childIdx}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         const data = await response.json();
@@ -85,7 +85,7 @@ function MBTI() {
     };
 
     const childIdx = sessionStorage.getItem('child_idx');
-    fetchData(`http://localhost:8080/api/v1/child/mbti/logs/${childIdx}`, (response) =>
+    fetchData(`http://kkuleogi.kro.kr/api/v1/child/mbti/logs/${childIdx}`, (response) =>
       setMbtiData({
         mbti_e: response.mbti_e,
         mbti_j: response.mbti_j,
@@ -93,7 +93,7 @@ function MBTI() {
         mbti_t: response.mbti_t,
       })
     );
-    fetchData(`http://localhost:8080/api/v1/child/mbti?childIdx=${childIdx}`, (response) =>
+    fetchData(`http://kkuleogi.kro.kr/api/v1/child/mbti?childIdx=${childIdx}`, (response) =>
       setCurrentMBTI(response.mbti)
     );
   }, []);

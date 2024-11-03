@@ -24,7 +24,7 @@ function Promotion() {
     e.preventDefault(); // 기본 폼 제출 동작 방지
     const token = localStorage.getItem('jwtToken');
     try {
-      const response = await fetch(`http://localhost:8080/event/attempt`, {
+      const response = await fetch(`http://kkuleogi.kro.kr/event/attempt`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ function Promotion() {
     const token = localStorage.getItem('jwtToken');
 
     try {
-      const response = await fetch(`localhost:8081/event/winner`, {
+      const response = await fetch(`http://kkuleogi.kro.kr/event/winner`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
