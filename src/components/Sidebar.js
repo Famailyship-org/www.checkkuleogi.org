@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // JWT 디코딩 라이브러리 추가
+import './css/Sidebar.css'; // CSS 파일 추가
 
 function Sidebar() {
     const navigate = useNavigate();

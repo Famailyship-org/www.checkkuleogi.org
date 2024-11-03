@@ -251,40 +251,42 @@ const toggleDislike = async () => {
     return (
         <div>
             <Header />
-            <div className='contents'>
+            <div className="contents">
                 <h1>전체 책 목록</h1>
-                <div className="book-list">
-                    {bookDetails.map((book, index) => (
-                        <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
-                            <img src={`/image/book/book${book.idx}.jpg`} alt={book.title} className="book-image" />
-                            <p>{book.title}</p>
-                        </div>
-                    ))}
+                <div className="book-list-container">
+                    <div className="book-list">
+                        {bookDetails.map((book, index) => (
+                            <div className="book-item" key={index} onClick={() => handleBookClick(index)}>
+                                <img src={`/image/book/book${book.idx}.jpg`} alt={book.title} className="book-image" />
+                                <p>{book.title}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
             {modalOpen && selectedBook !== null && (
-                <div className='book-modal' onClick={handleCloseModal}>
-                    <div className='book-modal-content' onClick={(e) => e.stopPropagation()}>
+                <div className="book-modal" onClick={handleCloseModal}>
+                    <div className="book-modal-content" onClick={(e) => e.stopPropagation()}>
                         <img src={`/image/book/book${bookDetails[selectedBook].idx}.jpg`} alt={bookDetails[selectedBook].title} />
-                        <span className='close' onClick={handleCloseModal}>&times;</span>
+                        <span className="close" onClick={handleCloseModal}>&times;</span>
                         <h2>{bookDetails[selectedBook].title}</h2>
-                        <p className='author'>{bookDetails[selectedBook].author}</p>
-                        <div className='detail'>
+                        <p className="author">{bookDetails[selectedBook].author}</p>
+                        <div className="detail">
                             <h2>이 책은요</h2>
                             <h3>줄거리</h3>
                             <p>{bookDetails[selectedBook].summary}</p>
                             <h3>MBTI</h3>
-                            <div className='book-mbti'>
+                            <div className="book-mbti">
                                 {bookDetails[selectedBook].mbti.map((type) => (
-                                    <div className='mbti-item' key={type}>
-                                        <div className='circle'>{type}</div>
-                                        <p className='description'>{mbtiDescriptions[type]}</p>
+                                    <div className="mbti-item" key={type}>
+                                        <div className="circle">{type}</div>
+                                        <p className="description">{mbtiDescriptions[type]}</p>
                                     </div>
                                 ))}
                             </div>
-
+    
                             <h3>나는 이 책이</h3>
-                            <div className='like-dislike'>
+                            <div className="like-dislike">
                                 <FaThumbsUp
                                     className={`like-icon ${likedStatus[selectedBook] ? 'active' : ''}`}
                                     onClick={toggleLike}
@@ -301,5 +303,4 @@ const toggleDislike = async () => {
         </div>
     );
 }
-
 export default BookList;

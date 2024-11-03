@@ -1,152 +1,63 @@
-@font-face {
-  font-family: 'omyu_pretty';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
-  font-weight: normal;
+/* App.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap');
+
+body {
+  padding: 0; /* 기본 패딩 제거 */
+  background-color: rgb(254, 239, 114); /* 원하는 배경색 설정 */
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
   font-style: normal;
 }
 
-
-body {
-  margin: 0;
-  font-family: "omyu_pretty";
+.app {
+  background-color: rgb(254, 239, 114); /* 전체 배경색 설정 */
 }
 
-.app {
-  display: flex;
+.header {
+  width: calc(100% - 250px); /* 사이드바를 제외한 전체 너비 */
+  height: 250px; /* 헤더 높이 설정 */
   background-color: rgb(254, 239, 114);
-  min-height: 100vh; /* 최소 높이를 100vh로 설정 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 250px; /* 사이드바의 오른쪽에 위치하도록 설정 */
+  z-index: 1001;
 }
 
 .sidebar {
   width: 250px;
-  background-color: white;
-  padding: 30px;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-
-.logo img {
-  margin: auto;
-  width: 200px; 
-  height: 100px; 
-  display: block; 
-}
-
-.auth {
-  margin-top:30px;
-  height:50px;
-  display: flex;              
-  justify-content: center;  
-  /* background-color: red;  */
-}
-
-.auth button {
-  background-color: white;
-  width: 100px;
-  height: 40px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-radius: 20px;
-  border: none; 
-  background-color: rgb(252, 247, 200);
-  transition: background-color 0.3s;
-}
-
-.auth button:hover {
-  background-color: rgb(254, 239, 114); 
-}
-
-.auth button.active {
+  height: 100vh;
   background-color: rgb(254, 239, 114);
-}
-
-.auth-profile {
-  display: flex;        
-  align-items: center;    
-  justify-content: end;    
-  position: relative;  
-}
-
-.tooltip {
-  position: absolute;
-  bottom: 115%; 
-  left: 17%; /* 가운데 정렬 */
-  transform: translateX(-50%);
-  background-color: #FFAC12; /* 반투명 배경 */
-  color: white;
-  font-weight: bolder;
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  white-space: nowrap; 
-  margin-bottom: 5px; 
-  z-index: 1; 
-}
-
-.tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%; /* 말풍선의 아래쪽 */
-  left: 50%; /* 가운데 정렬 */
-  transform: translateX(-50%); /* 가운데 정렬 */
-  border-width: 5px; /* 삼각형의 크기 */
-  border-style: solid;
-  border-color: #FFAC12 transparent transparent transparent; /* 아래쪽만 색칠 */
-}
-
-.auth-profile img {
-  cursor: pointer; /* 커서를 포인터로 변경 */
-}
-
-.profile-text {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
   display: flex;
-  align-items: center;    
-  padding:10px;
-}
-
-.auth-profile img{
-  width:60px;
-  height: 60px;
-  border-radius: 100px;
-}
-
-.menubar{
-  margin-top:20px;
-  /* background-color: red; */
-  height: 300px;
-}
-
-#menu {
-  height: 40px;
-  border-radius: 12px;
-  margin-bottom: 3px;
-  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px;
-  padding-left: 20px;
-  transition: background-color 0.3s; 
+  padding-top: 20px;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e0e0e0;
 }
 
-
-#menu:hover {
-  background-color: rgb(254, 239, 114); 
-}
-
-#menu.active {
+.container {
+  margin-top: 250px;
+  padding: 20px; /* 내부 패딩 추가 */
   background-color: rgb(254, 239, 114);
-  font-weight: bolder;
+  min-height: calc(100vh - 250px); /* 전체 높이에서 헤더 높이를 제외한 최소 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: flex-start; /* 세로 정렬 */
 }
 
-#menu img{
-  width: 25px;
-  height: 25px;
-}
-#menu p{
-  margin-left: 30px;
-}
-
-.main{
-  width: 100%;
-  height: 100%;
+/* 메인 콘텐츠의 스타일 */
+.main-content {
+  margin-top: 0;
+  border: 0;
+  background-color: rgb(254, 239, 114);
+  padding: px;
+  border-radius: 10px;
+  width: calc(100% - 250px); /* 좌우 패딩을 고려하여 100% 너비에서 패딩 제외 */
 }

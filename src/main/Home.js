@@ -277,7 +277,7 @@ return (
         {/* jwtToken이 있을 경우 추천 책 목록을 표시합니다 */}
         {token && (
             <div className="book-container">
-                <div className="header">
+                <div className="content">
                     <h2>추천 책 목록</h2>
                     <a href="/book/recommend" className="view-all">전체 보기</a>
                 </div>
@@ -294,7 +294,7 @@ return (
 
         {/* 전체 책 목록은 항상 표시 */}
         <div className="book-container">
-            <div className="header">
+            <div className="content">
                 <h2>전체 책 목록</h2>
                 <a href="/book" className="view-all">전체 보기</a>
             </div>

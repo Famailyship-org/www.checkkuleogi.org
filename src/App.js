@@ -1,6 +1,8 @@
+// App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 import Home from "./main/Home";
 import Signup from "./accounts/Signup";
 import SignupChild from './accounts/SignupChild';
@@ -19,33 +21,34 @@ import RecentList from './bookList/RecentList';
 
 import './App.css';
 
-
-//화면 전체 틀 - 왼쪽 사이드바 + 오른쪽 메인화면
 function App() {
   return (
     <Router>
       <div className="app">
-        <Sidebar /> 
-        <div className="main">
-          <Routes>
-            <Route path="/" element={ <Home/> }/>
-            <Route path="/signup" element={ <Signup/> }/>
-            <Route path="/signup/child" element={ <SignupChild/> }/>
-            <Route path="/login" element={ <Login/> }/>
-            <Route path="/login/child" element={ <LoginChild/> }/>
-            <Route path="/mbti" element={<MBTI />} />
-            <Route path="/mbti/main" element={<MBTIStart />} />
-            <Route path="/mbti/test" element={<MBTITest />} />
-            <Route path="/mbti/result" element={<MBTIResult />} />
-            <Route path="/event" element={<Promotion />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/book" element={ <BookList />} />
-            <Route path="/book/like" element={<LikeList />} />
-            <Route path="/book/recommend" element={ <RecommendList />} />
-            <Route path="/book/recent" element={ <RecentList />} />
-          </Routes>
+        <Header />
+        <Sidebar />
+        <div className="container">
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={ <Home/> }/>
+              <Route path="/signup" element={ <Signup/> }/>
+              <Route path="/signup/child" element={ <SignupChild/> }/>
+              <Route path="/login" element={ <Login/> }/>
+              <Route path="/login/child" element={ <LoginChild/> }/>
+              <Route path="/mbti" element={<MBTI />} />
+              <Route path="/mbti/main" element={<MBTIStart />} />
+              <Route path="/mbti/test" element={<MBTITest />} />
+              <Route path="/mbti/result" element={<MBTIResult />} />
+              <Route path="/event" element={<Promotion />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/book" element={ <BookList />} />
+              <Route path="/book/like" element={<LikeList />} />
+              <Route path="/book/recommend" element={ <RecommendList />} />
+              <Route path="/book/recent" element={ <RecentList />} />
+            </Routes>
+          </div>
         </div>
-    </div>
+      </div>
     </Router>
   );
 }

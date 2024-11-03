@@ -1,8 +1,64 @@
+.book-list-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff6b5;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
 .book-list {
-    width: 90%; /* 전체 너비를 사용 */
-    display: flex; /* 가로 방향으로 정렬 */
-    flex-wrap: wrap; /* 아이템이 여러 줄로 나누어질 수 있도록 설정 */
-    justify-content: flex-start; /* 왼쪽 정렬 */
-    padding: 10px 0; /* 위아래 여백 추가 */
-    box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.contents h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2F4858;
+    text-align: center;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.book-item {
+    width: calc(12.5% - 15px);
+    background-color: #fff6b5;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.3s ease;
+}
+
+.book-image:hover {
+    transform: scale(1.05);
+}
+
+.book-item p {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
 }

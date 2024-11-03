@@ -180,13 +180,19 @@ function LikeList() {
                             <p>{currentBook.summary}</p>
                             <h3>MBTI</h3>
                             <div className='book-mbti'>
-                                {currentBook.mbti.split("").map((type) => (
-                                    <div className='mbti-item' key={type}>
-                                        <div className='circle'>{type}</div>
-                                        <p className='description'>{mbtiDescriptions[type]}</p>
-                                    </div>
-                                ))}
+                                {currentBook && currentBook.mbti ? (
+                                    currentBook.mbti.split("").map((type) => (
+                                        <div className='mbti-item' key={type}>
+                                            <div className='circle'>{type}</div>
+                                            <p className='description'>{mbtiDescriptions[type]}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>MBTI 정보가 없습니다.</p>
+                                )}
                             </div>
+
+
                             <h3>나는 이 책이</h3>
                             <div className='like-dislike'>
                                 <FaThumbsUp
