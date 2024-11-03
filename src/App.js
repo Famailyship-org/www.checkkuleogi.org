@@ -15,7 +15,7 @@ import MBTIResult from "./mbti/MBTIResult";
 import Promotion from './promotion/Promotion';
 import Admin from './main/Admin';
 import LikeList from './bookList/Likelist';
-import BookList from './bookList/BookList';
+import BookList from './bookList/Booklist';
 import RecommendList from './bookList/Recommendlist';
 import RecentList from './bookList/Recentlist';
 
