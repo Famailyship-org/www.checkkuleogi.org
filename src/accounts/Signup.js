@@ -32,7 +32,7 @@ function Signup() {
      };
 
      try {
-       const response = await fetch('https://kkuleogi.kro.kruser/join', {
+       const response = await fetch('https://kkuleogi.kro.kr/user/join', {
          method: 'POST',
          headers: {
            'Content-Type': 'application/json',
