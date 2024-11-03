@@ -84,6 +84,7 @@ function MBTI() {
       }
     };
 
+    
     const childIdx = sessionStorage.getItem('child_idx');
     fetchData(`https://kkuleogi.kro.kr/api/v1/child/mbti/logs/${childIdx}`, (response) =>
       setMbtiData({

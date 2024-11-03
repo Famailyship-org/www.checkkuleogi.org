@@ -93,7 +93,10 @@ function Home() {
         if (childIdx && book.idx) {
             try {
                 await fetch(`https://kkuleogi.kro.kr/api/v1/book/${book.idx}?kidIdx=${childIdx}`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}` // JWT 토큰을 헤더에 추가
+                    }
                 });
                 console.log(`조회 기록 남김: book_idx=${book.idx}, kidIdx=${childIdx}`);
             } catch (error) {
