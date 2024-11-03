@@ -17,7 +17,7 @@ import Admin from './main/Admin';
 import LikeList from './bookList/Likelist';
 import BookList from './bookList/Booklist';
 import RecommendList from './bookList/Recommendlist';
-import RecentList from './bookList/Recentlist';
+import RecentList from './bookList/RecentList';
 
 import './App.css';
 
