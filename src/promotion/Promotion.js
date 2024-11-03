@@ -57,7 +57,7 @@ function Promotion() {
 
     try {
       const response = await fetch(`https://kkuleogi.kro.kr/event/winner`, {
-        method: "GET",
+        method: "POST",
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
