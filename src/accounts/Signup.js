@@ -15,44 +15,46 @@ function Signup() {
   const [parentBirthdate, setParentBirthdate] = useState('');
   const [gender, setGender] = useState('');
   
-   
-  
-    
   const handleSubmit = async (event) => {
-     event.preventDefault();
-    
-     const userData = {
-       id: userId,
-       password: password,
-       confirmPassword: confirmPassword,
-       name: parentName,
-       email: parentEmail,
-       birthday: parentBirthdate,
-       gender: gender 
-     };
-
-     try {
-       const response = await fetch('https://kkuleogi.kro.kr/user/join', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(userData),
-       });
-
-       const data = await response.json();
-
-       if(response.ok){
+    event.preventDefault();
+  
+    // 비밀번호와 비밀번호 확인이 일치하는지 검사
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다');
+      return; // 비밀번호가 다르면 회원가입 요청을 보내지 않음
+    }
+  
+    const userData = {
+      id: userId,
+      password: password,
+      confirmPassword: confirmPassword,
+      name: parentName,
+      email: parentEmail,
+      birthday: parentBirthdate,
+      gender: gender,
+    };
+  
+    try {
+      const response = await fetch('https://kkuleogi.kro.kr/user/join', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
         navigate('/login');
-       } else{
+      } else {
         alert(data.message);
-       }
-        
-     } catch (error) {
-        alert(error.message);
-     }
-   };
-
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  
   return (
     <div>
       <Header />
